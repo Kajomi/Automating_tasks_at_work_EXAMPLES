@@ -77,9 +77,10 @@ def calculate_distance(workspace):
         ids = item[0]
         shape = item[1]
 
-        # Define the filepath to geodatabase2 that has information form the previous
-        # geodatbase and thus, previous obstacle locations
-        gd2_fp = r'C:\TEMP\Export.gdb\Export_obs'
+        # Define the filepath to GeoDatabase2 that has information from the previous
+        # GeoDatabase and thus, previous obstacle locations
+        # Note - this filepath always stays the same!
+        gd2_fp = r'C:\Filepath_to_second_GDB\flight_obst.gdb\flight_obs'
 
         # Create ArcPy SearchCursor for the second GeoDatabase
         with arcpy.da.SearchCursor(gdb2_fp, ['ID', 'SHAPE@']) as cur2:
@@ -169,21 +170,21 @@ apron = 'EF_ACC_SECT_M'
 
 # ----> CHANGE THE FILEPATH NAME TO MATCH THE GEODATABASES ONE IF THE FILE IS NOT
 # NAMED IN THE SAME MANNER!
-gdb1_fp = r'I:\GIS\Esterekisterin_perusparannus\Perusparannus 2018\KÄSITTELY\\' + apron + '\\' + apron + '.gdb\\' + apron
+gdb1_fp = r'I:\GIS\Filepath_to_first_GDB\INPUT\\' + apron + '\\' + apron + '.gdb\\' + apron
 
 # Checking the filepath
 # ---------------------------
     # First, check if the endfile already exists for the subject
-if os.path.exists(r"I:\GIS\Esterekisterin_perusparannus\Perusparannus 2018\SELVITYS" + '\\' + apron):
+if os.path.exists(r"I:\GIS\Filepath_to_output_files\OUTPUT" + '\\' + apron):
     print('The folder already exists for {0}\n'.format(apron))
-    os.chdir(os.path.join(r'I:\GIS\Esterekisterin_perusparannus\Perusparannus 2018\SELVITYS', apron))
+    os.chdir(os.path.join(r'I:\GIS\Filepath_to_output_files\OUTPUT', apron))
 
     # If the file does not already exist, the script will create a new one and
     # will set it as the new directory
 else:
     print('Creating a new directory for {0}\n'.format(apron))
-    os.makedirs(r"I:\GIS\Esterekisterin_perusparannus\Perusparannus 2018\SELVITYS" + '\\' + apron)
-    os.chdir(os.path.join(r'I:\GIS\Esterekisterin_perusparannus\Perusparannus 2018\SELVITYS', apron))
+    os.makedirs(r"I:\GIS\Filepath_to_output_files\OUTPUT" + '\\' + apron)
+    os.chdir(os.path.join(r'I:\GIS\Filepath_to_output_files\OUTPUT', apron))
 
 # Final file that will be saved , adding date stamp to the filename
 save_time = datetime.now().strftime("_%Y%m%d_%H%M")
