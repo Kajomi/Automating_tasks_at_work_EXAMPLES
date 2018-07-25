@@ -60,18 +60,9 @@ def convert_txt_to_df(input_fp):
             else:
                 count += 1
                 # Select all the rows in the latter part according to the count done before
-                
-                        ## ================================================================
-                        # How to use wildcards to shorten this if statement to just searching
-                        # rows with the charachter '-' in it (i.e. if line2.contains(*---*): continue)
-                        ## ================================================================
-                        
                 for line2 in itertools.islice(ins, count, None):
-                    cond = '---------------------------------------------------------------------------'
-                    cond2 = '--------------------------------------------------------------------------'
-                    if cond in line2:
-                        continue
-                    if cond2 in line2:
+                    
+                    if line2.startswith('---'):
                         continue
 
                     # As the data has whitespaces between items that belong together
