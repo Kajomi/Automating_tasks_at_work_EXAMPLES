@@ -9,7 +9,7 @@
 #
 #              The data comes in a text file for each area separately and has varying
 #              number of flight obstacles. The input text file consists of standard
-#              information that does not vary between different text files.
+#              information at the top that does not vary between different text files.
 #
 #              In order to have a CSV -file with all obstacles and coordinates in
 #              decimal degrees - two functions are introduced in this Python script.
