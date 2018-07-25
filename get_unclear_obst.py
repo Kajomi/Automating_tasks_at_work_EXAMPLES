@@ -51,8 +51,8 @@ def get_GDB1_ID_s(inputFC, out_dict):
     '''
 
     # Defien the SQL -statement
-    haku_nimi = 'Epäselvä'
-    sql = "F_TOIMENPIDEKOODI = '{0}'".format(haku_nimi)
+    name_status = 'Unclear'
+    sql = "PROCEDURE = '{0}'".format(name_status)
 
     # Create ArcPy SearchCursor, that fetches certain rows from the geodatabase
     with arcpy.da.SearchCursor(inputFC, ['ID', 'TYPE', 'AGL_M_M', 'READY',
@@ -86,8 +86,8 @@ def get_GDB1_ID_s(inputFC, out_dict):
 
 def get_related_records(inputFC, related_dict):
     '''
-    This function fetches DIAARI -values from another Geodatabase which ID
-    matches that of an ID given as parameter. The DIAARI values are added to a
+    This function fetches DIAARI and OWNER -values from another Geodatabase which ID
+    matches that of an ID given as parameter. The DIAARI and OWNER values are added to a
     dictionary created with ger_GDB1_ID_s() -function.
 
     PARAMETERS:
