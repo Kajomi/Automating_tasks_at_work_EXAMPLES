@@ -149,8 +149,8 @@ def convert_to_DecDeg(data, output_csv):
 # ==============================================================================
 
 # Set input and output filepaths
-fp = r"C:\Users\ansmirkaj\Desktop\MIRKAJ\EFKE_VSS_36.txt"
-output_csv = r'C:\Users\ansmirkaj\Desktop\MIRKAJ\output\testi_koordinaatit_DataFrame.csv'
+fp = r"C:Path_to_input_file\EFKE_VSS_36.txt"
+output_csv = r'C:Path_to_output_file\coordinates_DataFrame.csv'
 
 # Run both functions in right order
 data_df = convert_txt_to_df(fp)
