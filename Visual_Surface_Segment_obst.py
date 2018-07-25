@@ -23,7 +23,6 @@
 
 # Import necessary modules
 import pandas as pd
-import arcpy
 import itertools
 import csv
 
@@ -150,7 +149,7 @@ def convert_to_DecDeg(data, output_csv):
 
 # Set input and output filepaths
 fp = r"C:Path_to_input_file\EFKE_VSS_36.txt"
-output_csv = r'C:Path_to_output_file\coordinates_DataFrame.csv'
+output_csv = r'C:Path_to_output_file\VSS_Point_Coord.csv'
 
 # Run both functions in right order
 data_df = convert_txt_to_df(fp)
