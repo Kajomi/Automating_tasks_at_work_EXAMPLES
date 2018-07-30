@@ -45,6 +45,77 @@ def convert_txt_to_df(input_fp):
     obstacles that are now ready to be processed more efficiently.
     '''
     # Open the input file and loop through the text file
+    with open(input_fp, 'r') as inp:
+
+        lst = []
+        end = 2
+        count = 0
+
+        # Skip the first 40 lines as they are not needed and are standard in all files
+        for line in itertools.islice(inp, 40, None):
+
+            # The first section is between two lines that startt with '----' -->
+            # count them and break once both have been iterated over
+            if line.startswith('---'):
+                count += 1
+                continue
+
+            if count >= end:
+                break
+
+            # As the data has whitespaces between items that belong together
+            # and between separate items, as well as some extra items that
+            # do not match with the headers, etc, some extra cleaning is needed!
+
+            # remove extra whitespaces, and add commas between items
+            line2 = ' '.join(line.split())
+            line2 = line2.replace(' ', ',')
+
+            # Check which items are digits and which are strings
+            lst_int = [int(x) if x.isdigit() else x for x in line2.split(',')]
+            #print(lst_int)
+            lst.append(lst_int)
+
+    # Pop out the header row and save in its own variable
+    header = lst.pop(0)
+
+    # Some of the rows have been split to be too long as one item has an extra
+    # whitespace between it which is why error shows saying there are too many
+    # elements combared to header values
+
+    # --> check which rows are too long and join right
+    # element in that list
+    for lista in lst:
+        if len(lista) > len(header):
+            print('Lists with abnormal lenght: ', lista)
+            lista[2:4] = [''.join(lista[2:4])]
+
+    # Create a pandas DataFrame
+    vss_df1 = pd.DataFrame(lst, columns = header)
+    #print(vss_df1)
+
+    # Return DataFrame
+    return vss_df1
+
+def convert_txt_to_df2(input_fp):
+    '''
+    The purpose of this function is to clean and process an text -file that contains
+    information on obstacles that penetrate a surface segment in certain height, and
+    thus can be hazards to flight operations within the area.
+
+    After the text file is processed, the list of lists is converted into pandas
+    DataFrame.
+
+    PARAMETERS
+    ----------
+    The function requires one parameter - the filepath for the input text-file.
+
+    RETURNS
+    -------
+    The function returns a pandas DataFrame that contains, the data of the flight
+    obstacles that are now ready to be processed more efficiently.
+    '''
+    # Open the input file and loop through the text file
     with open(fp, 'r') as ins:
         array = []
         count = 37
@@ -152,8 +223,22 @@ fp = r"C:Path_to_input_file\EFKE_VSS_36.txt"
 output_csv = r'C:Path_to_output_file\VSS_Point_Coord.csv'
 
 # Run both functions in right order
-data_df = convert_txt_to_df(fp)
-convert_to_DecDeg(data_df, output_csv)
+data_df1 = convert_txt_to_df(fp)
+data_right = data_df1[['IDENT', 'Delta']]
+data_right = data_right.rename(columns = {'IDENT': 'ident'})
+
+data_df2 = convert_txt_to_df2(fp)
+data_left = data_df2[['N', 'E', 'H(ft)', 'Id']]
+
+# Merge two dataframes together
+data_join = pd.merge(data_right, data_left, how = 'left', left_on = 'ident', right_on = 'Id')
+
+# Select only certain columns
+data_join = data_join[['Id', 'ident', 'Delta', 'H(ft)', 'N', 'E']]
+print(data_join)
+
+# Run the convert_to_DecDeg() - function
+convert_to_DecDeg(data_join, output_csv)
 
 
 print('DATA PROCESSING IS READY!')
