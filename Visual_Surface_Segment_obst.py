@@ -127,11 +127,11 @@ def convert_to_DecDeg(data, output_csv):
     for idx, row in data.iterrows():
         N_deg = row['N_str'][0:2]
         N_min = row['N_str'][2:4]
-        N_sec = row['N_str'][4:6]
+        N_sec = (float(row['N_str'][4:]))/10
 
         E_deg = row['E_str'][0:2]
         E_min = row['E_str'][2:4]
-        E_sec = row['E_str'][4:6]
+        E_sec = (float(row['E_str'][4:]))/10
 
         # Calculate the Decimal Degree values for both N and E
         dd_N = float(N_deg) + (float(N_min) / 60) + (float(N_sec) / 3600)
