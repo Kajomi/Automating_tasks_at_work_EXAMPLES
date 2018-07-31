@@ -26,7 +26,7 @@ import pandas as pd
 import itertools
 import csv
 
-def convert_txt_to_df(input_fp):
+def convert_txt_to_df(input_fp, row_count):
     '''
     The purpose of this function is to clean and process an text -file that contains
     information on obstacles that penetrate a surface segment in certain height, and
@@ -44,6 +44,9 @@ def convert_txt_to_df(input_fp):
     The function returns a pandas DataFrame that contains, the data of the flight
     obstacles that are now ready to be processed more efficiently.
     '''
+    
+    row_count = row_count
+    
     # Open the input file and loop through the text file
     with open(input_fp, 'r') as inp:
 
@@ -92,12 +95,14 @@ def convert_txt_to_df(input_fp):
 
     # Create a pandas DataFrame
     vss_df1 = pd.DataFrame(lst, columns = header)
-    #print(vss_df1)
+    
+    row_count = row_count - 1
+    print('number of rows: ' + str(row_count))
 
     # Return DataFrame
-    return vss_df1
+    return (vss_df1, row_count)
 
-def convert_txt_to_df2(input_fp):
+def convert_txt_to_df2(input_fp, row_count):
     '''
     The purpose of this function is to clean and process an text -file that contains
     information on obstacles that penetrate a surface segment in certain height, and
@@ -118,7 +123,6 @@ def convert_txt_to_df2(input_fp):
     # Open the input file and loop through the text file
     with open(fp, 'r') as ins:
         array = []
-        count = 37
 
         # Skip the first 40 lines as they are not needed and are standard in all files
         # Count the number of lines in the first section of the text file (this number
@@ -128,9 +132,8 @@ def convert_txt_to_df2(input_fp):
             if line == '\n':
                 break
             else:
-                count += 1
                 # Select all the rows in the latter part according to the count done before
-                for line2 in itertools.islice(ins, count, None):
+                for line2 in itertools.islice(ins, row_count, None):
                     
                     if line2.startswith('---'):
                         continue
@@ -164,7 +167,6 @@ def convert_txt_to_df2(input_fp):
     headers = array.pop(0)
     # Create a pandas DataFrame from the array and add headers as column names
     vss_df = pd.DataFrame(array, columns = headers)
-    print(vss_df)
 
     return vss_df
 
@@ -223,11 +225,11 @@ fp = r"C:Path_to_input_file\EFKE_VSS_36.txt"
 output_csv = r'C:Path_to_output_file\VSS_Point_Coord.csv'
 
 # Run both functions in right order
-data_df1 = convert_txt_to_df(fp)
+data_df1 = convert_txt_to_df(fp, 0)
 data_right = data_df1[['IDENT', 'Delta']]
 data_right = data_right.rename(columns = {'IDENT': 'ident'})
 
-data_df2 = convert_txt_to_df2(fp)
+data_df2 = convert_txt_to_df2(fp, n_rows)
 data_left = data_df2[['N', 'E', 'H(ft)', 'Id']]
 
 # Merge two dataframes together
