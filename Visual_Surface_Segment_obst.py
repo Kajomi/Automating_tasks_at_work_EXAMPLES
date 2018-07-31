@@ -25,6 +25,7 @@
 import pandas as pd
 import itertools
 import csv
+import arcpy
 
 def convert_txt_to_df(input_fp, row_count):
     '''
