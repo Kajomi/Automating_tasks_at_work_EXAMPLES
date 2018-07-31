@@ -243,6 +243,42 @@ print(data_join)
 convert_to_DecDeg(data_join, output_csv)
 
 
+# ==============================================================================
+# As I need to present these points representing flight obstacles on a map and I 
+#currently do not have geopandas installed in my computer - I am using ArcPy for 
+# the task:
+
+# ==============================================================================
+
+#                      CREATE A SHAPEFILE OF XY VALUES
+
+# First, a layer file needs to be created, after which it will be converted into
+# a point FeatureClass
+
+# ==============================================================================
+
+# Define the filepaths for .lyr and .shp files
+lyr = 'del_obst'
+out_lyr = r"C:filepath_to_output_lyr_file\output\testi_ajo_kopio\VSS_pnt.lyr"
+out_pnt_class = r"C:filepath_to_shp_file\output\VSS_pnt_to_class.shp"
+
+# Incorporate ArcPy module to create point feature class of the flight obstacles
+# to be shown on a map
+arcpy.MakeXYEventLayer_management(output_csv, 'Longitude', 'Latitude', lyr)
+
+    # Check all rows are included
+print(arcpy.GetCount_management(lyr))
+
+    # First save as a .lyr-file
+arcpy.SaveToLayerFile_management(lyr, out_lyr)
+
+    # Second, save the .lyr file as a shapefile
+arcpy.FeatureToPoint_management(out_lyr, out_pnt_class, "INSIDE")
+
+
+# ==============================================================================
+
+
 print('DATA PROCESSING IS READY!')
 
 
